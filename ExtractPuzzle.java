@@ -1,3 +1,5 @@
+package actio.ashcompany.com.puzzextractor;
+
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,71 +11,75 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 
-public class ExtractPuzzle {
+public class RareClass {
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		  
-		  try {
-			  File f = new File("C:\\Data\\Puzzle\\src\\jz140925.puz");
-			DataInputStream in = new DataInputStream(new FileInputStream(f));
-			byte[] work = new byte[8];
-		    List across = new ArrayList<Integer>();
-		    List down = new ArrayList<Integer>();
-		    LinkedHashMap lhm = new LinkedHashMap();
-			int index = 0;
-			int cross_count = 0;
-			int flag3 =0;
-			in.readFully( work, 0, 2 ); 
-	        short checksum1 = (short) ( ( work[ 1 ] & 0xff ) << 8 | ( work[ 0 ] & 0xff ) );
-	        System.out.println(checksum1);
-	        String s = readString(in,1024);
-	        System.out.println(s);
-	        in.readFully( work, 0, 2 ); 
-	        short checksum2= ( short ) ( ( work[ 1 ] & 0xff ) << 8 | ( work[ 0 ] & 0xff ) );
+    public static void main(String[] args) {
+        // TODO Auto-generated method stub
+
+        try {
+            File f = new File("C:\\Users\\admin\\AndroidStudioProjects\\PuzzExtractor\\app\\src\\main\\assets\\Sep0296.puz");
+            DataInputStream in = new DataInputStream(new FileInputStream(f));
+            byte[] work = new byte[8];
+            List across = new ArrayList<Integer>();
+            List down = new ArrayList<Integer>();
+            LinkedHashMap lhm = new LinkedHashMap();
+            int index = 0;
+            int cross_count = 0;
+            int flag3 =0;
+            String player,title;
+            in.readFully( work, 0, 2 );
+            short checksum1 = (short) ( ( work[ 1 ] & 0xff ) << 8 | ( work[ 0 ] & 0xff ) );
+            System.out.println(checksum1);
+            String s = readString(in,1024);
+            System.out.println(s);
+            in.readFully( work, 0, 2 );
+            short checksum2= ( short ) ( ( work[ 1 ] & 0xff ) << 8 | ( work[ 0 ] & 0xff ) );
             System.out.println(checksum2);
-            in.readFully( work, 0, 4 ); 
-            int checksum3 = ( work[ 3 ] ) << 24 | ( work[ 2 ] & 0xff ) << 16 | ( work[ 1 ] & 0xff ) << 8 
-                   | ( work[ 0 ] & 0xff );
+            in.readFully( work, 0, 4 );
+            int checksum3 = ( work[ 3 ] ) << 24 | ( work[ 2 ] & 0xff ) << 16 | ( work[ 1 ] & 0xff ) << 8
+                    | ( work[ 0 ] & 0xff );
             System.out.println(checksum3);
-            in.readFully( work, 0, 4 ); 
-            int checksum4 = ( work[ 3 ] ) << 24 | ( work[ 2 ] & 0xff ) << 16 | ( work[ 1 ] & 0xff ) << 8 
-                   | ( work[ 0 ] & 0xff );
-            System.out.println(checksum4);            
+            in.readFully( work, 0, 4 );
+            int checksum4 = ( work[ 3 ] ) << 24 | ( work[ 2 ] & 0xff ) << 16 | ( work[ 1 ] & 0xff ) << 8
+                    | ( work[ 0 ] & 0xff );
+            System.out.println(checksum4);
             String version = readString(in,1024);
             System.out.println(version);
-            in.skipBytes(2);  
-            in.readFully( work, 0, 2 );       
-            short scrambledChecksum = ( short ) ( ( work[ 1 ] & 0xff ) << 8 | ( work[ 0 ] & 0xff ) ); 
-            in.skipBytes(0x0C);  
-            byte width = in.readByte(); 
-            byte height = in.readByte(); 
+            System.out.println(version.length());
+            in.skipBytes(2);
+            in.readFully( work, 0, 2 );
+            short scrambledChecksum = ( short ) ( ( work[ 1 ] & 0xff ) << 8 | ( work[ 0 ] & 0xff ) );
+            if(version.length() == 3) {
+                in.skipBytes(0x0C);
+            }
+            else{
+                in.skipBytes(0x0B);
+            }
+            byte width = in.readByte();
+            byte height = in.readByte();
             System.out.println("width\t"+width+"height\t"+height);
-            in.readFully( work, 0, 2 ); 
-            short nClues = ( short ) ( ( work[ 1 ] & 0xff ) << 8 | ( work[ 0 ] & 0xff ) ); 
+            in.readFully( work, 0, 2 );
+            short nClues = ( short ) ( ( work[ 1 ] & 0xff ) << 8 | ( work[ 0 ] & 0xff ) );
             System.out.println(nClues);
-            in.skipBytes(2); 
-            boolean scrambeld = in.readShort() != 0; 
-            int size = width * height;    
+            in.skipBytes(2); /** remember this line critical in.skipBytes(2); **/
+            boolean scrambeld = in.readShort() != 0;
+            int size = width * height;
             String board = readString(in,size);
             System.out.println(board);
-            String player = readString(in,size);
+            player = readString(in,size);
             System.out.println(player);
-            String title = readString(in,1024);
+            title = readString(in,1024);
             System.out.println(title);
             String author = readString(in,1024);
             System.out.println(author);
             String cr = readString(in,1024);
             System.out.println(cr);
-            double d = Math.sqrt(board.length()/2);
-            width = (byte) d;
-            height = (byte) d;
             System.out.println("width\t"+width+"height\t"+height);
             //String[] questions = new String[nClues];
             //for(int i=0;i<nClues;i++)
             //{
-              // 	questions[i] =  readString(in, 1024);
-            	//System.out.println(questions[i]);
+            // 	questions[i] =  readString(in, 1024);
+            //System.out.println(questions[i]);
             //}
             char[][] answers = new char[width][height];
             for(int j=0;j<width;j++)
@@ -189,8 +195,8 @@ public class ExtractPuzzle {
             String[] questions = new String[across.size() + down.size()];
             for(int i=0;i<nClues;i++)
             {
-               	questions[i] =  readString(in, 1024);
-            	System.out.println(questions[i]);
+                questions[i] =  readString(in, 1024);
+                System.out.println(questions[i]);
             }
             System.out.println(questions.length);
             System.out.println(answer_list.length);
@@ -199,25 +205,25 @@ public class ExtractPuzzle {
                 lhm.put(questions[j],answer_list[j]);
             }
             System.out.println(lhm);
-		 // short checksum = dis.readShort(); 
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
-	}
-	 private static String readString(DataInputStream in, int bufferSize) throws IOException { 
-		  byte[] buffer = new byte[bufferSize]; 
-		   
-		  int i; 
-		  for (i=0; i<bufferSize; i++) { 
-		   byte b = in.readByte(); 
-		   if (b == 0) 
-		    break; 
-		    
-		   buffer[i] = b; 
-		  } 
-		   
-		  String s = new String(buffer, 0, i, "ISO-8859-1"); 
-		  return s; 
-		 } 
+            // short checksum = dis.readShort();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+    private static String readString(DataInputStream in, int bufferSize) throws IOException {
+        byte[] buffer = new byte[bufferSize];
+
+        int i;
+        for (i=0; i<bufferSize; i++) {
+            byte b = in.readByte();
+            if (b == 0)
+                break;
+
+            buffer[i] = b;
+        }
+
+        String s = new String(buffer, 0, i, "ISO-8859-1");
+        return s;
+    }
 }
